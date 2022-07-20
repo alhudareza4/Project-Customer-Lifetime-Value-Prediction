@@ -1,30 +1,20 @@
-# **Marketing Series : Customer Lifetime Value**
-****
-### Created by : Eta Engineers
 
-## Content :
 
-1. Business Problem Understanding
-2. Data Understanding
-3. Explanatory Data Analysis 
-4. Preprocessing
-5. Modeling & Analysis
-6. Conclusion and Recomendation
+# Description
 
-# **1. Business Problem Understanding**
+This notebook provides an end-to-end demonstration of Marketing Series : Customer Lifetime Value prediction using machine learning. The scope of topics discussed in this notebook includes data analysis & machine learning (supervised Regression, feature selection, hyperparameter tuning, etc.)
+
+This notebook also serves as a part of graduation requirement from Job Connector Data Science program by Purwadhika.
 ****
 
-**Context**
+# Problem Statement
 
 Sebuah perusahaan Asuransi Kendaraan di AS ingin meningkatkan revenue. Ada banyak faktor yang dapat memengaruhi kesuksesan sebuah perusahaan Asuransi. Pelanggan atau customer adalah salah satu faktor utama yang menentukan kesuksesaan perusahaan. Namun mereka menghadapi masalah dalam marketingnya. Mereka ingin mempertahankan pelanggannya dan juga menarik pelanggan baru. 
 
 Perusahaan sudah melakukan evaluasi, menawarkan perpanjangan polis dan mendapatkan respon dari customer. Namun itu belum cukup untuk menaikkan revenue perusahaan. Maka dari itu, mereka mempertimbangkan CLV (Customer Lifetime Value) sebagai parameter untuk tujuan ini.
 
 CLV berarti nilai umur pelanggan. Apa yang dimaksud dengan umur pelanggan di sini bukanlah umur pelanggan dilihat dari tahun kelahirannya, melainkan dari rentang waktu ia menggunakan produk asuransi kendaraan tersebut. Lebih jelas lagi, CLV adalah sebuah metrik untuk memperkirakan total nilai pelanggan terhadap sebuah perusahaan asuransi dalam jangka waktu tertentu (mengikuti durasi hubungan bisnis keduanya). Secara sederhana, CLV adalah prediksi atas nilai total pendapatan yang bisa didapatkan dari pelanggan tersebut.
-
-**Problem Statement :** <br>
-
-  Penerapan strategi atau treatment terdapat setiap pelanggan dapat berbeda- beda. Apabila dilakukan treatment yang sama ke seluruh pelanggan akan memakan waktu dan sumber daya yang lebih, terlebih lagi treatment yang tidak tepat sasaran dapat menyebabkan berkurangnya keuntungan hingga mengalami kerugian bagi perusahaan.
+Penerapan strategi atau treatment terdapat setiap pelanggan dapat berbeda- beda. Apabila dilakukan treatment yang sama ke seluruh pelanggan akan memakan waktu dan sumber daya yang lebih, terlebih lagi treatment yang tidak tepat sasaran dapat menyebabkan berkurangnya keuntungan hingga mengalami kerugian bagi perusahaan.
 
   Sebagai contoh, pelanggan baru membutuhkan promosi dan iklan dimana salah satunya berupa potongan harga atau pengenalan jasa/ asuransi jenis baru, sedangkan untuk pelanggan lama, salah satu treatmentnya adalah dengan memberikan reward kepada mereka sehingga pelanggan tersebut tidak akan beralih ke kompetitor. 
   Secara umum, customer lifetime value ini akan membantu perusahaan untuk : 
@@ -37,27 +27,51 @@ Dalam masalah yang melibatkan banyak variabel ini, dapat menjadi tantangan untuk
 1. Bagaimana memprediksi CLV, sehingga dapat meningkatkan revenue perusahaan?
 2. Fitur apa saja yang paling berpengaruh terhadap CLV, sehingga perusahaan dapat mengakuisisi pelanggan secara efektif?
 
-  
- **Goals :** <br>
+****
 
-  Berdasarkan permasalahan diatas, dapat kita simpulkan bahwa tujuan kita adalah untuk memahami hubungan antara variabel target (Y) dan variabel prediktor (X) serta menjelaskannya menggunakan data yang sesuai dengan regresi. Dengan demikian, perusahaan dapat memiliki kemampuan dalam memprediksi Customer Lifetime Value (CLV) dengan mengoptimalkan variable yang berpengaruh secara signifikan.
-  
-  **Analytic Approach :** <br>
+# Dataset Information
 
-  Kemudian, dalam mencapai tujuan tersebut kita akan melakukan analisa data yang bertujuan untuk menemukan pola dari variable- variable yang ada. Selain itu, analisa yang dilakukan untuk membangun model regresi yang terpercaya sehingga dapat dijadikan 'tools' bagi perusahaan dalam memprediksi Customer Lifetime Value
-  
-  **Metric Evaluation**
+Source : https://www.kaggle.com/datasets/arashnic/marketing-seris-customer-lifetime-value?select=squark_automotive_CLV_training_data.csv
 
-Evaluasi metrik yang akan dilakukan adalah R-square, dimana R-square adalah koefisien determinasi yang menjelaskan seberapa jauh data dependen dapat dijelaskan oleh data independen. R square bernilai antar 0 – 1 dengan ketentuan semakin mendekati angka satu berarti semakin baik.
 
-Alasan dalam Metric Evaluation menggunakan R-square adalah : 
+| Attribute | Data Type, Length | Description |
+| --- | --- | --- |
+| Customer | Text | ID Customer |
+| State | Text | Region |
+| Customer Lifetime Value | Float | Customer Lifetime Value (Target) |
+| Response | Text | Menanggapi panggilan pemasaran |
+| Coverage | Text | Jenis Pertanggungan Asuransi Kendaraan |
+| Education | Text | Pendidikan |
+| Effective To Date | Text | Tanggal asuransi expired |
+| Employment Status | Text | Status Pekerjaan |
+| Gender | Text | Female/Male |
+| Income | Float | Pendapatan Customer (Dollar) |
+| Location Code | Text | Wilayah Geografis tempat tinggal |
+| Marital Status | Text | Status Pernikahan |
+| Monthly Premium Auto | Float | Tagihan perbulan |
+| Months Since Last Claim | Float | Jumlah Bulan Sejak klaim terakhir |
+| Months Since Policy Inception | Float | Jumlah bulan sejak customer memulai polis asuransi  |
+| Number of Open Complaints | Float | Jumlah komplain yang masih berjalan |
+| Number of Policies | Float | Jumlah Polis yang dimiliki pelanggan saat ini |
+| Policy Type | Text | Tipe perjanjian asuransi |
+| Policy | Text | Perjanjian asuransi |
+| Renew Offer Type | Text | Penawaran untuk perbarui polis yang sudah/akan habis |
+| Sales Channel | Text | cara atau media yang ditempuh untuk menjual produk |
+| Total Claim Amount | Float | Jumlah kumulatif klaim sejak awal polis |
+| Vehicle Class | Text | Klasifikasi Tipe Kendaraan |
+| Vehicle Size | Text | Ukuran kendaraan |
+****
 
-**Dari sisi Data :** <br>
-    1. Dataset yang tersedia memiliki rentang nominal yang besar <br>
-    2. Berdasarkan jurnal penelitian yang diterbitkan oleh National Library of Medicine, menunjukkan R-square lebih informatif dan tidak bias daripada SMAPE, dan tidak memiliki keterbatasan interpretasi MSE, RMSE, MAE dan MAPE.
+# Content :
 
-**Dari sisi Bisnis :** <br>
-    1. Salah satu Goals dari Analisa ini adalah "memahami hubungan antara variabel target (Y) dan variabel prediktor (X)", dan R-square adalah metric evaluation yang paling tepat untuk merepresentasikan dari Goals tersebut.
+1. Business Problem Understanding
+2. Data Understanding
+3. Explanatory Data Analysis 
+4. Preprocessing
+5. Modeling & Analysis
+6. Conclusion and Recomendation
+****
+# How To Use
 
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8279135/
-
+To get the notebook, simply download or clone this repository. From there, you can open it up in a text editor.
+****
